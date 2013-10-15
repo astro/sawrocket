@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>netcat</title>
+    <style type="text/css">
+      html {
+          background-color: black;
+          color: white;
+      }
+      #stream {
+          max-height: 20rem;
+          overflow: auto;
+      }
+      .in {
+          margin: 0;
+          color: #afa;
+          background-color: #050;
+      }
+      .out {
+          margin: 0;
+          color: #faa;
+          background-color: #500;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>netcat</h1>
+    <form id="connectform">
+      <input id="host"
+	     size="20"
+	     value="mozilla.com">
+      :
+      <input id="port"
+	     size="5"
+	     value="80">
+      <input id="connect"
+	     type="submit"
+	     value="Connect">
+    </form>
+    <section id="stream">
+    </section>
+    <form id="inputform">
+      <textarea id="input" rows="3" cols="40"></textarea>
+      <input id="send"
+	     type="submit"
+	     value="Send">
+    </section>
+    <script type="text/javascript" src="jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="utf8.js"></script>
+    <script type="text/javascript" src="sawrocket.js"></script>
+    <script type="text/javascript" src="netcat.js"></script>
+  </body>
+</html>
