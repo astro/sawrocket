@@ -1,3 +1,34 @@
+if (navigator.mozTCPSocket) {
+
+function TCPSocket(host, port, options) {
+    if (!options)
+	options = {};
+    options.binaryType = options.binaryType || 'arraybuffer';
+
+    this.sock = navigator.mozTCPSocket.open(host, port, options);
+    ['open', 'drain', 'close'].forEach(function(type) {
+	this.sock['on' + type] = function(ev) {
+	    var cb = this['on' + type];
+	    if (cb)
+		cb(ev);
+	}.bind(this);
+    }.bind(this));
+    this.sock.ondata = function(ev) {
+	console.log("ondata", ev.data);
+	var cb = this.onmessage;
+	if (cb)
+	    cb(ev);
+    }.bind(this);
+}
+
+['send', 'resume', 'suspend', 'close'].forEach(function(method) {
+    TCPSocket.prototype[method] = function() {
+	return this.sock[method].apply(this.sock, arguments);
+    };
+});
+
+} else {
+
 function TCPSocket(host, port, options) {
     chrome.socket.create('tcp', {}, function(createInfo) {
 	if (createInfo.socketId)
@@ -84,3 +115,5 @@ TCPSocket.prototype.close = function() {
     chrome.socket.destroy(this.socketId);
     this.readyState = 'closed';
 };
+
+}

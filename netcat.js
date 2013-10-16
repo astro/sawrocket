@@ -2,10 +2,11 @@ var sock;
 
 function setDisconnected() {
     $('#connect').attr('value', "Connect");
-    $('#host').attr('disabled', "enabled");
-    $('#port').attr('disabled', "enabled");
+    $('#host').prop('disabled', false);
+    $('#port').prop('disabled', false);
     $('#inputform').hide();
 }
+setDisconnected();
 
 $('#connectform').submit(function(ev) {
     ev.preventDefault();
@@ -18,8 +19,8 @@ $('#connectform').submit(function(ev) {
 	$('#connect').attr('value', "Abort");
 	sock.onopen = function() {
 	    $('#connect').attr('value', "Disconnect");
-	    $('#host').attr('disabled', "disabled");
-	    $('#port').attr('disabled', "disabled");
+	    $('#host').prop('disabled', true);
+	    $('#port').prop('disabled', true);
 	    $('#inputform').slideDown(500);
 	    sock.onmessage = function(msg) {
 		var p = $('<pre class="in"></pre>');
@@ -55,4 +56,5 @@ $('#inputform').submit(function(ev) {
     p.text(s);
     $('#stream').append(p);
     sock.send(strToUTF8Arr(s).buffer);
+    $('#input').val("");
 });
