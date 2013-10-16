@@ -27,6 +27,14 @@ function TCPSocket(host, port, options) {
     };
 });
 
+TCPSocket.prototype.__defineGetter__('readyState', function() {
+  return this.sock.readyState;
+});
+
+TCPSocket.prototype.__defineGetter__('bufferedAmount', function() {
+  return this.sock.bufferedAmount;
+});
+
 } else {
 
 function TCPSocket(host, port, options) {
