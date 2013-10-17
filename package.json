@@ -1,0 +1,21 @@
+{
+  "name": "sawrocket",
+  "version": "0.0.0",
+  "description": "Raw Socket API SHIM",
+  "author": "https://github.com/astro",
+  "readmeFilename": "README.md",
+  "main": "sawrocket.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/astro/sawrocket.git"
+  },
+  "bugs": {
+    "url": "https://github.com/astro/sawrocket/issues"
+  },
+  "keywords": [
+    "Raw",
+    "Socket",
+    "API",
+    "SHIM"
+  ]
+}
