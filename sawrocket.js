@@ -10,7 +10,7 @@ function TCPSocket(host, port, options) {
 	this.sock['on' + type] = function(ev) {
 	    var cb = this['on' + type];
 	    if (cb)
-		cb(ev);
+		cb.call(this, ev);
 	}.bind(this);
     }.bind(this));
     this.sock.ondata = function(ev) {
@@ -61,7 +61,7 @@ TCPSocket.prototype.emit =  function(type, event) {
     var cb = this['on' + type];
     if (cb) {
 	try {
-	    cb(event);
+	    cb.call(this, event);
 	} catch(e) {
 	    console.error(e.stack || e.message || e);
 	}
