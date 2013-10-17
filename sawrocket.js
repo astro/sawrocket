@@ -125,3 +125,7 @@ TCPSocket.prototype.close = function() {
 };
 
 }
+
+if (module && module.exports) {
+    module.exports.TCPSocket = TCPSocket;
+}
