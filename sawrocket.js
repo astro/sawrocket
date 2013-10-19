@@ -94,8 +94,9 @@ TCPSocket.prototype.send = function(data) {
 TCPSocket.prototype.resume = function() {
     this.suspended = false;
     if (this.nextMessage) {
-	this.emit('message', this.nextMessage);
-	this.nextMessage = null;
+        var message = this.nextMessage;
+        this.nextMessage = null;
+        this.emit('message', message);
     }
 
     if (this.reading)
