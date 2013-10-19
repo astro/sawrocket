@@ -10,7 +10,7 @@ function TCPSocket(host, port, options) {
 	this.sock['on' + type] = function(ev) {
 	    var cb = this['on' + type];
 	    if (cb)
-		cb(ev);
+		cb.call(this, ev);
 	}.bind(this);
     }.bind(this));
     this.sock.ondata = function(ev) {
@@ -27,12 +27,13 @@ function TCPSocket(host, port, options) {
     };
 });
 
-TCPSocket.prototype.__defineGetter__('readyState', function() {
-  return this.sock.readyState;
-});
-
-TCPSocket.prototype.__defineGetter__('bufferedAmount', function() {
-  return this.sock.bufferedAmount;
+['remoteAddress', 'remotePort', 'localAddress', 'localPort',
+ 'readyState', 'bufferedAmount'].forEach(function (key) {
+    Object.defineProperty(TCPSocket.prototype, key, {
+        get:function() {
+            return this.sock[key];
+        }
+    });
 });
 
 } else {
@@ -45,6 +46,12 @@ function TCPSocket(host, port, options) {
 		    this.readyState = 'open';
 		    this.socketId = createInfo.socketId;
 		    this.bufferedAmount = 0;
+            chrome.socket.getInfo(this.socketId, function (info) {
+                this.remoteAddress = info.peerAddress;
+                this.remotePort = info.peerPort;
+                this.localAddress = info.localAddress;
+                this.localPort = info.localPort;
+            }.bind(this));
 		    this.emit('open', {});
 		    if (!this.suspended)
 			this.resume();
@@ -61,7 +68,7 @@ TCPSocket.prototype.emit =  function(type, event) {
     var cb = this['on' + type];
     if (cb) {
 	try {
-	    cb(event);
+	    cb.call(this, event);
 	} catch(e) {
 	    console.error(e.stack || e.message || e);
 	}
@@ -87,8 +94,9 @@ TCPSocket.prototype.send = function(data) {
 TCPSocket.prototype.resume = function() {
     this.suspended = false;
     if (this.nextMessage) {
-	this.emit('message', this.nextMessage);
-	this.nextMessage = null;
+        var message = this.nextMessage;
+        this.nextMessage = null;
+        this.emit('message', message);
     }
 
     if (this.reading)
@@ -124,4 +132,8 @@ TCPSocket.prototype.close = function() {
     this.readyState = 'closed';
 };
 
+}
+
+if (module && module.exports) {
+    module.exports.TCPSocket = TCPSocket;
 }
