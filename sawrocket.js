@@ -27,12 +27,13 @@ function TCPSocket(host, port, options) {
     };
 });
 
-TCPSocket.prototype.__defineGetter__('readyState', function() {
-  return this.sock.readyState;
-});
-
-TCPSocket.prototype.__defineGetter__('bufferedAmount', function() {
-  return this.sock.bufferedAmount;
+['remoteAddress', 'remotePort', 'localAddress', 'localPort',
+ 'readyState', 'bufferedAmount'].forEach(function (key) {
+    Object.defineProperty(TCPSocket.prototype, key, {
+        get:function() {
+            return this.sock[key];
+        }
+    });
 });
 
 } else {
@@ -45,6 +46,12 @@ function TCPSocket(host, port, options) {
 		    this.readyState = 'open';
 		    this.socketId = createInfo.socketId;
 		    this.bufferedAmount = 0;
+            chrome.socket.getInfo(this.socketId, function (info) {
+                this.remoteAddress = info.peerAddress;
+                this.remotePort = info.peerPort;
+                this.localAddress = info.localAddress;
+                this.localPort = info.localPort;
+            }.bind(this));
 		    this.emit('open', {});
 		    if (!this.suspended)
 			this.resume();
