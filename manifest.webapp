@@ -2,6 +2,7 @@
   "name": "Saw Rocket",
   "description": "Raw Socket API for Chrome",
   "type": "privileged",
+  "version": "1",
   "launch_path": "/netcat.html",
   "permissions": {
     "tcp-socket": {
