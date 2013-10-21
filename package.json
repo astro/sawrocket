@@ -1,8 +1,9 @@
 {
   "name": "sawrocket",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Raw Socket API SHIM",
-  "author": "https://github.com/astro",
+  "author": "Astro",
+  "contributors": ["dodo"],
   "readmeFilename": "README.md",
   "main": "sawrocket.js",
   "repository": {
