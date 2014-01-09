@@ -85,7 +85,7 @@ TCPSocket.prototype.send = function(data) {
 	this.bufferedAmount -= len;
 	if (this.bufferedAmount < 1)
 	    this.emit('drain', {});
-    });
+    }.bind(this));
     var buffered = this.bufferedAmount > 0;
     this.bufferedAmount += len;
     return !buffered;
