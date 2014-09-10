@@ -14,7 +14,6 @@ function TCPSocket(host, port, options) {
 	}.bind(this);
     }.bind(this));
     this.sock.ondata = function(ev) {
-	console.log("ondata", ev.data);
 	var cb = this.onmessage;
 	if (cb)
 	    cb(ev);
@@ -86,7 +85,6 @@ TCPSocket.prototype.send = function(data) {
         throw new Error(this._type + " socket not open");
 
     var len = data.byteLength;
-    console.log("write", data);
     chrome.socket.write(this.socketId, data, function() {
         this.bufferedAmount -= len;
         if (this.bufferedAmount < 1)
