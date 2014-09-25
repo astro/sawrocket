@@ -120,7 +120,7 @@ TCPSocket.prototype._read = function() {
 	    this.nextMessage = {
 		data: readInfo.data
 	    };
-	    if (!this.suspended)
+	    if (!this.suspended && this.readyState === 'open')
 		this.resume();
 	}
     }.bind(this));
@@ -205,7 +205,7 @@ UDPSocket.prototype._read = function() {
                 port: recvInfo.port,
                 data: recvInfo.data
             };
-            if (!this.suspended)
+            if (!this.suspended && this.readyState === 'open')
             this.resume();
         }
     }.bind(this));
